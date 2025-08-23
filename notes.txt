@@ -1,0 +1,218 @@
+# FastAPI Real-World Assignment Questions
+# Scenario (read-only)
+
+# You are building an Orders & Inventory microservice for a tiny online store with two
+# resources: Product and Order. Orders reduce product stock; a payment webhook marks orders
+# as paid. You must implement CRUD, document the API, test it via multiple tools, deploy it on
+# Render.com, then load test briefly.
+
+# Part A Environment & Project Setup
+# Questions
+# 1. What Python version and minimal dependencies will you choose for a FastAPI CRUD
+# service? Justify each package.
+# 2. How will you structure folders so that your code is readable and testable (e.g., app/,
+# tests/)? Provide the final tree.
+
+# Suggestions
+#  Keep it small: fastapi, uvicorn, and one of sqlmodel/sqlalchemy/in-memory store.
+#  Add requests for black-box tests.
+#  Include a requirements.txt with pinned versions.
+
+# Solution -
+# 1. Python Version and Dependencies:
+# - Python 3.9+: Chosen for its stability and compatibility with FastAPI and modern libraries.
+# - FastAPI: The main framework for building the API, known for its speed and ease of use.
+# - Uvicorn: An ASGI server to run the FastAPI application, chosen for its performance.
+# - SQLModel: An ORM that simplifies database interactions and integrates well with FastAPI.
+# - Pydantic: Used for data validation and serialization, ensuring that the data conforms to expected formats.
+# - Requests: For making HTTP requests in tests, allowing for black-box testing of the API endpoints.
+# - pytest: A testing framework to write and run tests, chosen for its simplicity and powerful features.
+# - HTTPX: An alternative to requests for async HTTP requests, useful for testing async endpoints.
+# - Alembic: For database migrations, ensuring that the database schema can evolve over time.
+# - dotenv: To manage environment variables, keeping sensitive information out of the codebase.
+# - Black: A code formatter to maintain consistent code style across the project.
+# - isort: To sort imports in a consistent manner, improving code readability.
+# - MyPy: For static type checking, helping to catch type-related errors early in the development process.
+# - Coverage: To measure code coverage of tests, ensuring that the codebase is well-tested.
+# - Render.com CLI: For deploying the application to Render.com, chosen for its simplicity and ease of use.
+# - Locust: A load testing tool to simulate user traffic and measure the performance of the API under load.
+# - Docker: To containerize the application, ensuring consistency across different environments.
+# - Docker Compose: To manage multi-container Docker applications, useful for running the app alongside a
+# database during development and testing.
+# - Git: For version control, allowing for collaboration and tracking changes in the codebase.
+# - GitHub Actions: For CI/CD, automating testing and deployment processes.
+# - Postman: For manual API testing and documentation, providing an easy way to interact with the API.
+# - Swagger UI: Automatically provided by FastAPI for API documentation and testing.
+# - Jinja2: For templating, if needed for any HTML responses or documentation generation.
+# - Loguru: For logging, providing an easy-to-use and powerful logging solution.
+# - Sentry SDK: For error tracking and monitoring, helping to identify and fix issues in production.
+# - Celery: For handling background tasks, such as sending emails or processing orders asynchronously.
+# - Redis: As a message broker for Celery, providing fast and reliable communication between services.
+# - PostgreSQL: A robust and scalable relational database, suitable for production use.
+# - SQLite: A lightweight database for development and testing, easy to set up and use.
+# - SQLAlchemy: If not using SQLModel, as a powerful ORM for database interactions.
+# - Alembic: For database migrations, ensuring that the database schema can evolve over time.
+# - pytest-asyncio: For testing async endpoints, allowing for proper testing of asynchronous code.
+# - Faker: For generating fake data during testing, useful for populating the database with test data.
+# - Pydantic[email]: For email validation, ensuring that email fields conform to valid formats.
+# - FastAPI Users: For user management, providing a ready-to-use solution for authentication and
+# authorization.
+
+
+# 2. Project Structure:
+# ```
+# orders_inventory_service/
+# ├── app/
+# │   ├── api/
+# │   │   ├── v1/
+# │   │   │   ├── endpoints/
+# │   │   │   │   ├── products.py
+# │   │   │   │   ├── orders.py
+# │   │   │   │   └── payments.py
+# │   │   │   └── __init__.py
+# │   │   └── __init__.py
+# │   ├── core/
+# │   │   ├── config.py
+# │   │   ├── security.py
+# │   │   └── __init__.py
+# │   ├── models/
+# │   │   ├── product.py
+# │   │   ├── order.py
+# │   │   └── __init__.py
+# │   ├── schemas/
+# │   │   ├── product.py
+# │   │   ├── order.py
+# │   │   └── __init__.py
+# │   ├── services/
+# │   │   ├── product_service.py
+# │   │   ├── order_service.py
+# │   │   └── payment_service.py
+# │   ├── db/
+# │   │   ├── base.py
+# │   │   ├── session.py
+# │   │   └── __init__.py
+# │   ├── main.py
+# │   └── __init__.py
+# ├── tests/
+# │   ├── api/
+# │   │   ├── test_products.py
+# │   │   ├── test_orders.py
+# │   │   └── test_payments.py
+# │   ├── conftest.py
+# │   └── __init__.py
+# ├── alembic/
+# │   ├── versions/
+# │   ├── env.py
+# │   ├── script.py.mako
+# │   └── README
+# ├── .env
+# ├── .gitignore
+# ├── Dockerfile
+# ├── docker-compose.yml
+# ├── requirements.txt
+# ├── README.md
+# └── pytest.ini
+# ```
+# Explanation of Structure:
+# - app/: Contains the main application code.
+# - api/: Contains API versioning and endpoint definitions.
+# - core/: Contains configuration and security-related code.
+# - models/: Contains database models.
+# - schemas/: Contains Pydantic schemas for data validation and serialization.
+# - services/: Contains business logic and service layer code.
+# - db/: Contains database connection and session management code.
+# - main.py: The entry point of the application.
+# - tests/: Contains all test cases, organized similarly to the app/ directory for clarity.
+# - alembic/: Contains database migration scripts and configurations.
+# - .env: Environment variables for configuration.
+# - .gitignore: Specifies files and directories to be ignored by Git.
+# - Dockerfile: Instructions to build the Docker image for the application.
+# - docker-compose.yml: Configuration for running the application and its dependencies in Docker containers.
+# - requirements.txt: Lists all dependencies with pinned versions.
+# - README.md: Documentation for the project.
+# - pytest.ini: Configuration file for pytest.
+# This structure ensures that the code is modular, readable, and testable, making it easier to maintain and extend in the future.
+# Part B CRUD Operations
+
+
+# Part B Data Modeling & Validation
+# Questions
+# 1. 2. Define a Product model with fields: id, sku, name, price, stock.
+# o Which constraints are necessary (e.g., unique sku, price > 0, stock >= 0)?
+# o What indexes would you add and why?
+# Define an Order model with fields: id, product_id, quantity, status, created_at.
+# o Which statuses should be allowed?
+# o How will you validate quantity?
+# Suggestions
+#  Decide whether to use SQLite + SQLModel/SQLAlchemy or a simple in-memory dict
+# for speed. Either is acceptable if constraints are enforced.
+#  Keep status constrained (e.g., PENDING|PAID|SHIPPED|CANCELED) and document it.
+
+# Solution -
+# 1. Product Model:
+# - Fields:
+# - id: Integer, Primary Key, Auto-incremented.
+# - sku: String, Unique, Not Null. (Unique constraint to ensure each product has a unique identifier)
+# - name: String, Not Null.
+# - price: Float, Not Null, Check constraint (price > 0). (Ensures that the price is always a positive value)
+# - stock: Integer, Not Null, Check constraint (stock >= 0). (Ensures that stock cannot be negative)
+# - Indexes:
+# - Unique index on sku: To enforce uniqueness and improve lookup speed for products by SKU.
+# - Index on name: To improve search performance when querying products by name.
+# - Index on price: To optimize queries that filter or sort products by price.
+# 2. Order Model:
+# - Fields:
+# - id: Integer, Primary Key, Auto-incremented.
+# - product_id: Integer, Foreign Key referencing Product(id), Not Null.
+# - quantity: Integer, Not Null, Check constraint (quantity > 0). (Ensures that the quantity ordered is always a positive value)
+# - status: String, Not Null, Check constraint (status IN ('PENDING', 'PAID', 'SHIPPED', 'CANCELED')). (Restricts status to predefined values)
+# - created_at: DateTime, Not Null, Default to current timestamp.
+# - Allowed Statuses:
+# - PENDING: Order has been created but not yet paid.
+# - PAID: Payment has been received for the order.
+# - SHIPPED: Order has been shipped to the customer.
+# - CANCELED: Order has been canceled.
+# - Quantity Validation:
+# - Use a Check constraint to ensure that quantity is always greater than 0.
+# - Additionally, implement validation in the application layer to ensure that the quantity
+# being ordered does not exceed the available stock of the product.
+# - This can be done by checking the stock of the product before creating an order and
+# returning an error if the requested quantity is greater than the available stock.
+# - Example Pydantic Models:
+
+from sqlmodel import SQLModel, Field, Relationship
+from typing import Optional, List
+from datetime import datetime
+from enum import Enum
+from pydantic import conint, confloat
+from sqlalchemy import CheckConstraint, Index, ForeignKey
+from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+
+class OrderStatus(str, Enum):
+    PENDING = "PENDING"
+    PAID = "PAID"
+    SHIPPED = "SHIPPED"
+    CANCELED = "CANCELED"
+
+
+class Product(SQLModel, table=True):
+    __tablename__ = "products"
+    __table_args__ = (
+        CheckConstraint("price > 0", name="check_price_positive"),
+        CheckConstraint("stock >= 0", name="check_stock_non_negative"),
+        Index("idx_sku", "sku", unique=True),
+        Index("idx_name", "name"),
+        Index("idx_price", "price"),
+    )
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    sku: str = Field(index=True, nullable=False, unique=True)
+    name: str = Field(nullable=False)
+    price: confloat(gt=0) = Field(nullable=False)
+    stock: conint(ge=0) = Field(nullable=False)
+
+    orders: List["Order"] = Relationship(back_populates="product")
