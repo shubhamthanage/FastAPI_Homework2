@@ -1,0 +1,33 @@
+# app/main.py
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from sqlmodel import SQLModel
+from app.db.session import engine
+from app.api.v1 import api_router
+from app.core.config import settings
+
+app = FastAPI(
+    title="Orders & Inventory Service",
+    version="0.1.0",
+    description="A tiny Orders & Inventory microservice with product CRUD, orders, and payment webhook.",
+    openapi_tags=[
+        {"name": "products", "description": "Product CRUD operations"},
+        {"name": "orders", "description": "Order creation and tracking"},
+        {"name": "payments", "description": "Payment webhooks"},
+    ],
+)
+
+# CORS for testing from other hosts (adjust for production)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(api_router, prefix="/api/v1")
+
+@app.on_event("startup")
+def on_startup():
+    # create DB tables
+    SQLModel.metadata.create_all(engine)
