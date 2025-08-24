@@ -5,6 +5,13 @@ from sqlmodel import SQLModel
 from app.db.session import engine
 from app.api.v1 import api_router
 from app.core.config import settings
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # create DB tables on startup
+    SQLModel.metadata.create_all(engine)
+    yield
 
 app = FastAPI(
     title="Orders & Inventory Service",
@@ -15,6 +22,7 @@ app = FastAPI(
         {"name": "orders", "description": "Order creation and tracking"},
         {"name": "payments", "description": "Payment webhooks"},
     ],
+    lifespan=lifespan,
 )
 
 # CORS for testing from other hosts (adjust for production)
@@ -26,8 +34,3 @@ app.add_middleware(
 )
 
 app.include_router(api_router, prefix="/api/v1")
-
-@app.on_event("startup")
-def on_startup():
-    # create DB tables
-    SQLModel.metadata.create_all(engine)

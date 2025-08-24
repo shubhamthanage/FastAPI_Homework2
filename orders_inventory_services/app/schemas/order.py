@@ -16,7 +16,7 @@ class OrderRead(BaseModel):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class OrderUpdate(BaseModel):
     # allow only status changes (and maybe quantity before PAID)

@@ -29,7 +29,7 @@ def handle_payment_event(session: Session, payload: dict):
             raise ValueError("Order not found")
         # only apply if pending
         if order.status == OrderStatus.PAID:
-            return  # idempotent
+            return  # idempotent - already paid, just return success
         if order.status != OrderStatus.PENDING:
             # allow marking PAID only from PENDING
             raise ValueError("Order is not in PENDING and cannot be marked PAID")

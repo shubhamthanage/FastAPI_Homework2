@@ -13,6 +13,6 @@ class OrderStatus(str, enum.Enum):
 class Order(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     product_id: int = Field(foreign_key="product.id")
-    quantity: int = Field(sa_column=Column(Integer), nullable=False)
-    status: OrderStatus = Field(default=OrderStatus.PENDING, sa_column=Column(Enum(OrderStatus), nullable=False))
+    quantity: int = Field(sa_column=Column(Integer))
+    status: OrderStatus = Field(default=OrderStatus.PENDING, sa_column=Column(Enum(OrderStatus)))
     created_at: datetime = Field(default_factory=datetime.utcnow)

@@ -15,7 +15,7 @@ class ProductRead(ProductBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class ProductUpdate(BaseModel):
     # allow partial updates
