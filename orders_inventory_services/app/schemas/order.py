@@ -2,7 +2,7 @@
 from datetime import datetime
 from pydantic import BaseModel, Field
 from typing import Optional
-from app.models.order import OrderStatus
+from orders_inventory_services.app.models.order import OrderStatus
 
 class OrderCreate(BaseModel):
     product_id: int

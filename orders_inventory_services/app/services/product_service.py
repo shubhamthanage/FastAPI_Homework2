@@ -1,7 +1,7 @@
 # app/services/product_service.py
 from sqlmodel import Session, select
-from app.models.product import Product
-from app.schemas.product import ProductCreate, ProductUpdate
+from orders_inventory_services.app.models.product import Product
+from orders_inventory_services.app.schemas.product import ProductCreate, ProductUpdate
 
 def create_product(session: Session, p: ProductCreate) -> Product:
     # check duplicate SKU

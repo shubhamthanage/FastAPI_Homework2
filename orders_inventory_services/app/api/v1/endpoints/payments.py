@@ -5,10 +5,10 @@ import json
 import uuid
 from fastapi import APIRouter, Request, Header, HTTPException, status, Depends
 from sqlmodel import Session
-from app.core.config import settings
-from app.services.payment_service import handle_payment_event
-from app.db.session import get_session
-from app.schemas.payment import PaymentRequest, PaymentResponse, SignatureRequest, SignatureResponse
+from orders_inventory_services.app.core.config import settings
+from orders_inventory_services.app.services.payment_service import handle_payment_event
+from orders_inventory_services.app.db.session import get_session
+from orders_inventory_services.app.schemas.payment import PaymentRequest, PaymentResponse, SignatureRequest, SignatureResponse
 
 router = APIRouter()
 

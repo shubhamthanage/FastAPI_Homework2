@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.v1.endpoints import products, orders, payments
+from orders_inventory_services.app.api.v1.endpoints import products, orders, payments
 
 api_router = APIRouter()
 

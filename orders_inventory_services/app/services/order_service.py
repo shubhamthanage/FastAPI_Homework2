@@ -1,8 +1,8 @@
 # app/services/order_service.py
 from sqlmodel import Session, select
-from app.models.order import Order, OrderStatus
-from app.models.product import Product
-from app.schemas.order import OrderCreate, OrderUpdate
+from orders_inventory_services.app.models.order import Order, OrderStatus
+from orders_inventory_services.app.models.product import Product
+from orders_inventory_services.app.schemas.order import OrderCreate, OrderUpdate
 from datetime import datetime
 
 def create_order(session: Session, o: OrderCreate) -> Order:

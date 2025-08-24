@@ -1,6 +1,6 @@
 # app/db/session.py
 from sqlmodel import create_engine, Session, SQLModel
-from app.core.config import settings
+from orders_inventory_services.app.core.config import settings
 from typing import Generator
 
 engine = create_engine(settings.DATABASE_URL, connect_args={"check_same_thread": False})

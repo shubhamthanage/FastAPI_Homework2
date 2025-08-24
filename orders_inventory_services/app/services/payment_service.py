@@ -1,7 +1,7 @@
 # app/services/payment_service.py
 from sqlmodel import Session, select
-from app.models.order import Order, OrderStatus
-from app.models.webhook_event import WebhookEvent
+from orders_inventory_services.app.models.order import Order, OrderStatus
+from orders_inventory_services.app.models.webhook_event import WebhookEvent
 from datetime import datetime
 
 def handle_payment_event(session: Session, payload: dict):

@@ -2,9 +2,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
 from typing import List
-from app.db.session import get_session
-from app.schemas.order import OrderCreate, OrderRead, OrderUpdate
-from app.services.order_service import create_order, get_order, update_order, delete_order
+from orders_inventory_services.app.db.session import get_session
+from orders_inventory_services.app.schemas.order import OrderCreate, OrderRead, OrderUpdate
+from orders_inventory_services.app.services.order_service import create_order, get_order, update_order, delete_order
 
 router = APIRouter()
 

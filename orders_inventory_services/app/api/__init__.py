@@ -1,6 +1,6 @@
-# app/api/v1/__init__.py
+# app/api/__init__.py
 from fastapi import APIRouter
-from app.api.v1.endpoints import products, orders, payments
+from orders_inventory_services.app.api.v1.endpoints import products, orders, payments
 
 api_router = APIRouter()
 api_router.include_router(products.router, prefix="/products", tags=["products"])

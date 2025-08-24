@@ -2,9 +2,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel
-from app.db.session import engine
-from app.api.v1 import api_router
-from app.core.config import settings
+from orders_inventory_services.app.db.session import engine
+from orders_inventory_services.app.api.v1 import api_router
+from orders_inventory_services.app.core.config import settings
 from contextlib import asynccontextmanager
 
 @asynccontextmanager
