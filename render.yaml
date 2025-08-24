@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: orders-inventory-service
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        value: sqlite:///./orders.db
+      - key: WEBHOOK_SECRET
+        value: render_production_secret
+      - key: ENVIRONMENT
+        value: production
